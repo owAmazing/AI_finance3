@@ -8,16 +8,25 @@ class TemporalTest:
     def run_validation(data_by_year):
         all_rounds_results = []
         
-        # 專案規定的完整年份範圍：1997 到 2008
-        start_year = 1997
-        end_year = 2008
+        # 💡 【改動 1】動態抓取新資料庫中的所有可用年份 (例如得到 [2010, 2011, 2012, 2013, 2014, 2015])
+        available_years = sorted(list(data_by_year.keys()))
+        if not available_years:
+            print("錯誤：輸入的資料中沒有找到有效的年份數據！")
+            return []
+            
+        start_year = available_years[0]   # 自動變成 2010
+        end_year = available_years[-1]     # 自動變成 2015
         
-        # 總共會跑 11 輪 (輪次 1 到 11)
-        # 輪次 1: 1997 訓, 1998~2008 測
-        # 輪次 2: 1997~1998 訓, 1999~2008 測
+        # 💡 【改動 2】動態計算總共可以滾動幾輪 
+        # 為了留至少一年當測試期，總輪數 = 總年數 - 1 (在這份資料中會跑 5 輪)
+        total_rounds = end_year - start_year
+        
+        # 滾動回測：
+        # 輪次 1: 2010 訓, 2011~2015 測
+        # 輪次 2: 2010~2011 訓, 2012~2015 測
         # ...
-        # 輪次 11: 1997~2007 訓, 2008 測
-        for round_idx in range(1, 12):
+        # 輪次 5: 2010~2014 訓, 2015 測
+        for round_idx in range(1, total_rounds + 1):
             last_train_year = start_year + round_idx - 1
             
             # 1. 動態配置該輪的訓練年份與測試年份

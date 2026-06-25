@@ -5,7 +5,7 @@ from temporal_test import TemporalTest
 
 def main():
     print("正在讀取 top200.xlsx 財報資料集並進行預處理...")
-    excel_path = "top200.xlsx"
+    excel_path = "top200_testing.xlsx"
     
     loader = DataLoader(excel_path)
     data_by_year = loader.load_and_clean_data()
@@ -32,7 +32,7 @@ def main():
     print("="*115 + "\n")
     
     # 2. 自動將資料寫入 Excel 檔案：task2_results.xlsx
-    output_filename = "task2_results.xlsx"
+    output_filename = "task2_testing_results.xlsx"
     print(f"正在將量化成果導出至 {output_filename} ...")
     
     wb = openpyxl.Workbook()
